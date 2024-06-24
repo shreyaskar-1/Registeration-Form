@@ -29,3 +29,62 @@ header {
         .form-group {
             margin-bottom: 20px;
         }
+
+        /* login form */
+
+/* Centering the form */
+.account-wall {
+    margin-top: 20px;
+    padding: 40px 0;
+    background-color: #f7f7f7;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    position: relative;
+    height: 30vw;
+    width: 25vw;
+}
+
+/* Profile image styling */
+.profile-img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    display: block;
+    margin: 0 auto 20px;
+}
+
+/* Form input styling */
+.form-signin .form-control {
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+/* Sign in button styling */
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.btn-primary:hover, .btn-primary:focus {
+    background-color: #0056b3;
+    border-color: #004085;
+}
+
+/* Checkbox styling */
+.checkbox {
+    font-size: 14px;
+}
+
+/* "Need Help?" link styling */
+.need-help {
+    font-size: 14px;
+    display: block;
+    margin-top: 10px;
+}
+
+/* "Create an Account" link styling */
+.new-account {
+    display: block;
+    margin-top: 20px;
+    font-size: 14px;
+}

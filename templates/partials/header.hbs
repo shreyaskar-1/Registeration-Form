@@ -1,5 +1,42 @@
-    <meta charset="UTF-8">
+ <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="css/style.css"> 
+    <title>User Registration and Login</title>
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- Include Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Include jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    
+    <!-- Optional: Bootstrap JS (if using modal or other Bootstrap components) -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Optional: Your custom CSS -->
+    <style>
+        .nav-link.active {
+            font-weight: bold;
+        }
+    </style>
+    
+    <!-- Optional: Your custom JavaScript for tab switching -->
+    <script>
+        $(document).ready(function() {
+            // Handle tab click events
+            $('#register-tab').click(function(e) {
+                e.preventDefault(); // Prevent the default anchor link behavior
+                $('#login-tab').removeClass('active');
+                $('#register-tab').addClass('active');
+                $('#login').removeClass('show active');
+                $('#register').addClass('show active');
+            });
+
+            $('#login-tab').click(function(e) {
+                e.preventDefault(); // Prevent the default anchor link behavior
+                $('#register-tab').removeClass('active');
+                $('#login-tab').addClass('active');
+                $('#register').removeClass('show active');
+                $('#login').addClass('show active');
+            });
+        });
+    </script>

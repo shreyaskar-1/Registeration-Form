@@ -34,8 +34,8 @@ app.post("/register", async (req, res) => {
         const cpassword = req.body.confirmpassword;
 
         // Debugging logs
-        console.log(`Password: ${password}`);
-        console.log(`Confirm Password: ${cpassword}`);
+        // console.log(`Password: ${password}`);
+        // console.log(`Confirm Password: ${cpassword}`);
 
         if (password === cpassword) {
             const registerEmployee = new Register({
@@ -61,6 +61,25 @@ app.post("/register", async (req, res) => {
 app.get("/login", (req, res) => {
     res.render("login.hbs");
 });
+// sign in user
+app.post("/login", async (req, res) => {
+    try{
+        const email = req.body.email;
+        const password = req.body.password;
+
+      const userEmail =  await Register.findOne({email});
+      
+      if (userEmail.password === password){
+        res.status(201).render("index");
+      }else{
+        res.send("Invalid Login Details")
+      }
+
+    }catch(err){
+        res.status(400).send("Invalid login Details")
+    }
+});
+
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);

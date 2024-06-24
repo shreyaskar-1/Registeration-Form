@@ -2,81 +2,84 @@
 <html lang="en">
 <head>
 {{>header}}
-
 </head>
 <body>
     {{>navbar}}
-    <div class="container mt-5">
-    <ul class="nav nav-tabs" id="myTab" role="tablist">
-        <li class="nav-item">
-            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Register</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Login</a>
-        </li>
-    </ul>
-    <div class="tab-content" id="myTabContent">
-        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-            <h3 class="register-heading">Employee Registration Form</h3>
-            <form action="/register" method="POST">
-                <div class="row register-form">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="First Name*" value="" name="firstname" required/>
-                        </div>
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Last Name*" value="" name="lastname" required/>
-                        </div>
-                        <div class="form-group">
-                            <input type="email" class="form-control" placeholder="Email*" value="" name="email" required/>
-                        </div>
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Phone*" value="" name="phone" required/>
-                        </div>
-                        <div class="form-group">
-                            <input type="password" class="form-control" placeholder="Password*" value="" name="password" required/>
-                        </div>
-                        <div class="form-group">
-                            <input type="password" class="form-control" placeholder="Confirm Password*" value="" name="confirmpassword" required/>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="d-block">Gender*</label>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="gender" id="male" value="Male" required>
-                                <label class="form-check-label" for="male">Male</label>
+<div class="container mt-5">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="register-tab" href="#register" role="tab" aria-controls="register" aria-selected="true">Register</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="login-tab" href="#login" role="tab" aria-controls="login" aria-selected="false">Login</a>
+            </li>
+        </ul>
+        <div class="tab-content mt-3" id="myTabContent">
+            <div class="tab-pane fade show active" id="register" role="tabpanel" aria-labelledby="register-tab">
+                <h3 class="register-heading">Employee Registration Form</h3>
+                <form action="/register" method="POST">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="First Name*" name="firstname" required>
                             </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="gender" id="female" value="Female" required>
-                                <label class="form-check-label" for="female">Female</label>
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Last Name*" name="lastname" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="email" class="form-control" placeholder="Email*" name="email" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Phone*" name="phone" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="password" class="form-control" placeholder="Password*" name="password" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="password" class="form-control" placeholder="Confirm Password*" name="confirmpassword" required>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <input type="number" class="form-control" placeholder="Age*" value="" name="age" required/>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="d-block">Gender*</label>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="gender" id="male" value="Male" required>
+                                    <label class="form-check-label" for="male">Male</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="gender" id="female" value="Female" required>
+                                    <label class="form-check-label" for="female">Female</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <input type="number" class="form-control" placeholder="Age*" name="age" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Register</button>
                         </div>
-                        <input type="submit" class="btn btn-primary" value="Register"/>
                     </div>
-                </div>
-            </form>
-        </div>
-        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-            <h3 class="register-heading">Employee Login Form</h3>
-            <form action="/login" method="POST">
-                <div class="row register-form">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <input type="email" class="form-control" placeholder="Email*" value="" name="email" required/>
+                </form>
+            </div>
+            <div class="tab-pane fade" id="login" role="tabpanel" aria-labelledby="login-tab">
+                <h3 class="register-heading">Employee Login Form</h3>
+                <form action="/login" method="POST">
+                    <div class="row">
+                        <div class="col-md-6 mx-auto">
+                            <div class="form-group">
+                                <input type="email" class="form-control" placeholder="Email*" name="email" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="password" class="form-control" placeholder="Password*" name="password" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+                            <label class="checkbox mt-3">
+                                <input type="checkbox" name="remember_me" value="remember me"> Remember me
+                            </label>
+                            <a href="#" class="pull-right mt-3">Need Help?</a>
                         </div>
-                        <div class="form-group">
-                            <input type="password" class="form-control" placeholder="Password*" value="" name="password" required/>
-                        </div>
-                        <input type="submit" class="btn btn-primary" value="Login"/>
                     </div>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
     </div>
-</div>
 </body>
 </html>
