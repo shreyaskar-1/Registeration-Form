@@ -4,6 +4,7 @@ const Register = require("../src/models/registers");
 const path = require("path");
 require("./db/conn");
 const hbs = require('hbs');
+const bcrypt = require("bcryptjs");
 
 const port = process.env.PORT || 3000;
 
@@ -68,11 +69,13 @@ app.post("/login", async (req, res) => {
         const password = req.body.password;
 
       const userEmail =  await Register.findOne({email});
+
+      const isMatch = bcrypt.compare(password,userEmail.password)
       
-      if (userEmail.password === password){
+      if (isMatch){
         res.status(201).render("index");
       }else{
-        res.send("Invalid Login Details")
+        res.send("Invalid Password")
       }
 
     }catch(err){
