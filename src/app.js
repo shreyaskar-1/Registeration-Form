@@ -4,7 +4,7 @@ const Register = require("../src/models/registers");
 const path = require("path");
 require("./db/conn");
 const hbs = require('hbs');
-const bcrypt = require("bcryptjs");
+const bcrypt = require("bcrypt");
 
 const port = process.env.PORT || 3000;
 
@@ -34,10 +34,6 @@ app.post("/register", async (req, res) => {
         const password = req.body.password;
         const cpassword = req.body.confirmpassword;
 
-        // Debugging logs
-        // console.log(`Password: ${password}`);
-        // console.log(`Confirm Password: ${cpassword}`);
-
         if (password === cpassword) {
             const registerEmployee = new Register({
                 firstname: req.body.firstname,
@@ -46,9 +42,10 @@ app.post("/register", async (req, res) => {
                 gender: req.body.gender,
                 phone: req.body.phone,
                 age: req.body.age,
-                password: req.body.password,
-                confirmpassword: req.body.confirmpassword
+                password: password,
+                confirmpassword: cpassword
             });
+
             const registered = await registerEmployee.save();
             res.status(201).render("index.hbs");
         } else {
@@ -62,27 +59,26 @@ app.post("/register", async (req, res) => {
 app.get("/login", (req, res) => {
     res.render("login.hbs");
 });
+
 // sign in user
 app.post("/login", async (req, res) => {
-    try{
+    try {
         const email = req.body.email;
         const password = req.body.password;
 
-      const userEmail =  await Register.findOne({email});
+        const userEmail = await Register.findOne({ email });
 
-      const isMatch = bcrypt.compare(password,userEmail.password)
-      
-      if (isMatch){
-        res.status(201).render("index");
-      }else{
-        res.send("Invalid Password")
-      }
+        const isMatch = await bcrypt.compare(password, userEmail.password);
 
-    }catch(err){
-        res.status(400).send("Invalid login Details")
+        if (isMatch) {
+            res.status(201).render("index");
+        } else {
+            res.send("Invalid Password");
+        }
+    } catch (err) {
+        res.status(400).send("Invalid login details");
     }
 });
-
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);

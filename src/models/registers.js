@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
 
 const employeeSchema = new mongoose.Schema({
     firstname: {
@@ -18,30 +19,35 @@ const employeeSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    phone:{
-        type:Number,
-        required:true,
-        unique:true
+    phone: {
+        type: Number,
+        required: true,
+        unique: true
     },
-    age:{
-        type:Number,
-        required:true
+    age: {
+        type: Number,
+        required: true
     },
-    gender:{
-        type:String,
-        required:true
+    password: {
+        type: String,
+        required: true
     },
-    password:{
-        type:String,
-        required:true
-    },
-    confirmpassword:{
-        type:String,
-        required:true
+    confirmpassword: {
+        type: String,
+        required: true
     }
-})
+});
 
+employeeSchema.pre("save", async function(next) {
+    if (this.isModified("password")) {
+        console.log(`The current password is ${this.password}`);
+        this.password = await bcrypt.hash(this.password, 10); // Corrected typo
+        console.log(`The new password is ${this.password}`);
+        this.confirmpassword = undefined;
+    }
+    next();
+});
 
-// creating collection
+// Creating collection
 const Register = mongoose.model("Register", employeeSchema);
 module.exports = Register;
