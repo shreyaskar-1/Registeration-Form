@@ -51,3 +51,4 @@ employeeSchema.pre("save", async function(next) {
 // Creating collection
 const Register = mongoose.model("Register", employeeSchema);
 module.exports = Register;
+
