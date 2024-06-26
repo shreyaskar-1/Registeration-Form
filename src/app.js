@@ -6,6 +6,7 @@ require("./db/conn");
 const hbs = require('hbs');
 const bcrypt = require("bcrypt");
 
+
 const port = process.env.PORT || 3000;
 
 const static_path = path.join(__dirname, "../public");
@@ -46,6 +47,7 @@ app.post("/register", async (req, res) => {
                 confirmpassword: cpassword
             });
 
+            
             const registered = await registerEmployee.save();
             res.status(201).render("index.hbs");
         } else {
@@ -79,6 +81,8 @@ app.post("/login", async (req, res) => {
         res.status(400).send("Invalid login details");
     }
 });
+
+
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);

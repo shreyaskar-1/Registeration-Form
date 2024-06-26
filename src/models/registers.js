@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken") 
 
 const employeeSchema = new mongoose.Schema({
     firstname: {
@@ -38,10 +39,22 @@ const employeeSchema = new mongoose.Schema({
     }
 });
 
+// Use Of Jwt tokens
+employeeSchema.add.methods.generateAuthToken = async function(){
+    try{
+        const token = jwt.sign({_id:this._id}, process.env.SECRET_KEY);
+        return token;
+        }catch(err){
+            res.send("the error part"+ err);
+            console.log("the error part"+ err);
+            }
+}
+
+// conversion of password into hash
 employeeSchema.pre("save", async function(next) {
     if (this.isModified("password")) {
         console.log(`The current password is ${this.password}`);
-        this.password = await bcrypt.hash(this.password, 10); // Corrected typo
+        this.password = await bcrypt.hash(this.password, 10);
         console.log(`The new password is ${this.password}`);
         this.confirmpassword = undefined;
     }
