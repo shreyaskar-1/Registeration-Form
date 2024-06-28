@@ -33,57 +33,53 @@ app.get("/register", (req, res) => {
 // create new user
 app.post("/register", async (req, res) => {
     try {
-        const { firstname, lastname, email, gender, phone, age, password, confirmpassword } = req.body;
+        const password = req.body.password;
+        const cpassword = req.body.confirmpassword;
 
-        // Check if passwords match
-        if (password !== confirmpassword) {
-            return res.status(400).send("Passwords do not match");
+        if (password === cpassword) {
+            const registerEmployee = new Register({
+                firstname: req.body.firstname,
+                lastname: req.body.lastname,
+                email: req.body.email,
+                gender: req.body.gender,
+                phone: req.body.phone,
+                age: req.body.age,
+                password: password,
+                confirmpassword: cpassword
+            });
+
+            console.log("the success part" + registerEmployee)
+
+            const token = await registerEmployee.generateAuthToken();
+            console.log("the token part" + token)
+            
+            const registered = await registerEmployee.save();
+            res.status(201).render("index.hbs");
+        } else {
+            res.send("Passwords do not match");
         }
-
-        // Check if user with the same email already exists
-        const existingUser = await Register.findOne({ email });
-        if (existingUser) {
-            return res.status(400).send("User already exists with this email");
-        }
-
-        // Create new user instance
-        const newUser = new Register({
-            firstname,
-            lastname,
-            email,
-            gender,
-            phone,
-            age,
-            password
-        });
-
-        // Generate auth token
-        const token = await newUser.generateAuthToken();
-
-        // Save user to database
-        await newUser.save();
-
-        res.status(201).render("index.hbs");
-    } catch (error) {
-        console.error("Error registering user:", error);
-        res.status(400).send(error.message);
+    } catch (e) {
+        res.status(400).send(e);
     }
 });
-
 
 app.get("/login", (req, res) => {
     res.render("login.hbs");
 });
 
-// sign in user
+// log in user
 app.post("/login", async (req, res) => {
     try {
         const email = req.body.email;
         const password = req.body.password;
-
+        
+        // instance of the collection
         const userEmail = await Register.findOne({ email });
 
         const isMatch = await bcrypt.compare(password, userEmail.password);
+
+        const token = await userEmail.generateAuthToken();
+        console.log("the token part " + token)
 
         if (isMatch) {
             res.status(201).render("index");
