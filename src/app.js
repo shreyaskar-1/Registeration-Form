@@ -5,6 +5,7 @@ const path = require("path");
 require("./db/conn");
 const hbs = require('hbs');
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken")
 
 
 const port = process.env.PORT || 3000;
@@ -32,31 +33,43 @@ app.get("/register", (req, res) => {
 // create new user
 app.post("/register", async (req, res) => {
     try {
-        const password = req.body.password;
-        const cpassword = req.body.confirmpassword;
+        const { firstname, lastname, email, gender, phone, age, password, confirmpassword } = req.body;
 
-        if (password === cpassword) {
-            const registerEmployee = new Register({
-                firstname: req.body.firstname,
-                lastname: req.body.lastname,
-                email: req.body.email,
-                gender: req.body.gender,
-                phone: req.body.phone,
-                age: req.body.age,
-                password: password,
-                confirmpassword: cpassword
-            });
-
-            
-            const registered = await registerEmployee.save();
-            res.status(201).render("index.hbs");
-        } else {
-            res.send("Passwords do not match");
+        // Check if passwords match
+        if (password !== confirmpassword) {
+            return res.status(400).send("Passwords do not match");
         }
-    } catch (e) {
-        res.status(400).send(e);
+
+        // Check if user with the same email already exists
+        const existingUser = await Register.findOne({ email });
+        if (existingUser) {
+            return res.status(400).send("User already exists with this email");
+        }
+
+        // Create new user instance
+        const newUser = new Register({
+            firstname,
+            lastname,
+            email,
+            gender,
+            phone,
+            age,
+            password
+        });
+
+        // Generate auth token
+        const token = await newUser.generateAuthToken();
+
+        // Save user to database
+        await newUser.save();
+
+        res.status(201).render("index.hbs");
+    } catch (error) {
+        console.error("Error registering user:", error);
+        res.status(400).send(error.message);
     }
 });
+
 
 app.get("/login", (req, res) => {
     res.render("login.hbs");

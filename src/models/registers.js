@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken") 
+const jwt = require("jsonwebtoken");
 
 const employeeSchema = new mongoose.Schema({
     firstname: {
@@ -33,22 +33,26 @@ const employeeSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    confirmpassword: {
-        type: String,
-        required: true
-    }
+    tokens:[{
+        token: {
+            type: String,
+            required: true
+        }
+    }]
 });
 
 // Use Of Jwt tokens
-employeeSchema.add.methods.generateAuthToken = async function(){
-    try{
-        const token = jwt.sign({_id:this._id}, process.env.SECRET_KEY);
+employeeSchema.methods.generateAuthToken = async function() {
+    try {
+        const token = jwt.sign({ _id: this._id.toString()},"2f4b5e7d8a9c0e1f3b5d7a8c9e0f2b3d");
+        this.tokens = this.tokens.concat({ token });
+        await this.save();
         return token;
-        }catch(err){
-            res.send("the error part"+ err);
-            console.log("the error part"+ err);
-            }
-}
+    } catch(err) {
+        console.error("Error generating auth token:", err);
+        throw err;
+    }
+};
 
 // conversion of password into hash
 employeeSchema.pre("save", async function(next) {
@@ -64,4 +68,3 @@ employeeSchema.pre("save", async function(next) {
 // Creating collection
 const Register = mongoose.model("Register", employeeSchema);
 module.exports = Register;
-
