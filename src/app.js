@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require("express");
 const app = express();
 const Register = require("../src/models/registers");
@@ -48,10 +49,10 @@ app.post("/register", async (req, res) => {
                 confirmpassword: cpassword
             });
 
-            console.log("the success part" + registerEmployee)
+            // console.log("the success part" + registerEmployee)
 
             const token = await registerEmployee.generateAuthToken();
-            console.log("the token part" + token)
+            // console.log("the token part" + token)
             
             const registered = await registerEmployee.save();
             res.status(201).render("index.hbs");
