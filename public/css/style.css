@@ -51,6 +51,7 @@ header {
     border-radius: 50%;
     display: block;
     margin: 0 auto 20px;
+    background-color: #fff;
 }
 
 /* Form input styling */

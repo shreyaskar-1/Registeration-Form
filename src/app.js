@@ -6,7 +6,8 @@ const path = require("path");
 require("./db/conn");
 const hbs = require('hbs');
 const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken")
+const jwt = require("jsonwebtoken");
+const cookieParser = require("cookie-parser");
 
 
 const port = process.env.PORT || 3000;
@@ -22,6 +23,7 @@ hbs.registerPartials(partials_path);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
 
 app.get("/", (req, res) => {
     res.render("index.hbs");
@@ -53,6 +55,17 @@ app.post("/register", async (req, res) => {
 
             const token = await registerEmployee.generateAuthToken();
             // console.log("the token part" + token)
+
+            // The res.cookie() function is used to set the cookie name to value.
+            // The value parameter may be a string or object converted to json 
+            // res.cookie(name, value[options])
+
+            res.cookie("jwt",token,{
+                expires: new Date(Date.now() + 30000),
+                httpOnly:true
+            });
+
+            console.log(`this is cookie ${req.cookies.jwt}`);
             
             const registered = await registerEmployee.save();
             res.status(201).render("index.hbs");
@@ -80,7 +93,14 @@ app.post("/login", async (req, res) => {
         const isMatch = await bcrypt.compare(password, userEmail.password);
 
         const token = await userEmail.generateAuthToken();
-        console.log("the token part " + token)
+        // console.log("the token part " + token)
+
+        res.cookie("jwt",token,{
+            expires: new Date(Date.now() + 60000),
+            httpOnly:true
+        });
+
+
 
         if (isMatch) {
             res.status(201).render("index");
