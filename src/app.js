@@ -145,18 +145,34 @@ app.post("/login", async (req, res) => {
 });
 
 app.get("/logout", auth, async (req, res) => {
-  try {
-    res.clearCookie("jwt");
-    console.log("Logout successful");
+    try {
+      // Filter out the current token from req.user.tokens
+    //   just for the current device.
+    //   req.user.tokens = req.user.tokens.filter((currentToken) => {
+    //     return currentToken.token !== req.token;
+    //   });
 
-    if (req.user && typeof req.user.save === 'function') {
-      await req.user.save();
+    //   logging out for multiplae devices
+      req.user.tokens = [];
+  
+      // Clear JWT cookie
+      res.clearCookie("jwt");
+      console.log("Logout successful");
+  
+      // Save the modified req.user object to the database
+    //   await req.user.save();
+      if (req.user && typeof req.user.save === 'function') {
+        await req.user.save();
+      }
+  
+      // Render the login view with isAuthenticated set to false
+      res.render("login.hbs", { isAuthenticated: false });
+    } catch (err) {
+      // Handle any errors that occur during logout
+      res.status(500).send(err);
     }
-    res.render("login.hbs", { isAuthenticated: false });
-  } catch (err) {
-    res.status(500).send(err);
-  }
-});
+  });
+  
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
